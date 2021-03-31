@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Test</title>
+    <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
+</head>
+
+<body>
+    <main>
+        <div class="container">
+            <button class="button" id="mainButton" onclick="changeLock()">Lock</button>
+        </div>
+    </main>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        var clicked = 1;
+        function changeLock() {
+            if (clicked == 2) {
+                console.log('open');
+
+                const params = new URLSearchParams();
+                params.append('lock', '0');
+                params.append('timestamp', (Date.now() / 1000));
+                
+                axios.post('/api/lock',
+                    params, {
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    }
+                }).then(function (response) {
+                    console.log(response);
+                });
+
+                document.getElementById('mainButton').innerHTML = 'lock door';
+                clicked = 1;
+
+            } else {
+                console.log('lock');
+
+                const params = new URLSearchParams();
+                params.append('lock', '1');
+                params.append('timestamp', (Date.now() / 1000));
+
+                axios.post('/api/lock',
+                    params, {
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    }
+                }).then(function (response) {
+                    console.log(response);
+                });
+
+                document.getElementById('mainButton').innerHTML = 'open door';
+                clicked = 2;
+
+            }
+
+        }
+    </script>
+</body>
+
+</html>
